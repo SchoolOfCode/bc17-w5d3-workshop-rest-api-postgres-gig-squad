@@ -32,6 +32,12 @@ export async function getBookById(id) {
 
 export async function createBook(book) {
   // Query the database to create a book and return the newly created book
+  /* INSERT INTO SQL TEMPLATE:
+  INSERT INTO table_name (column1, column2, column3, ...)
+  VALUES (value1, value2, value3, ...); */
+  const queryText = "INSERT INTO books (title, published_date, author_id) VALUES ($1, $2, $3) RETURNING id, title, published_date, author_id;";
+  const result = await pool.query(queryText, [book.title, book.published_date, book.author_id]);
+  return result.rows[0] || null;
 }
 
 export async function updateBookById(id, updates) {

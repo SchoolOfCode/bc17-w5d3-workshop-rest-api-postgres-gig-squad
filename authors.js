@@ -32,14 +32,23 @@ export async function getAuthorById(id) {
 
 export async function createAuthor(author) {
   // Query the database to create an author and return the newly created author
-  const queryText = "INSERT INTO authors (first_name, last_name) VALUES ($1, $2) RETURNING id, first_name, last_name"
+  /* INSERT INTO SQL TEMPLATE:
+  INSERT INTO table_name (column1, column2, column3, ...)
+  VALUES (value1, value2, value3, ...); */
+  const queryText = "INSERT INTO authors (first_name, last_name) VALUES ($1, $2) RETURNING id, first_name, last_name;";
   const result = await pool.query(queryText, [author.first_name, author.last_name]);
-  console.log(result);
   return result.rows[0] || null;
 }
 
 export async function updateAuthorById(id, updates) {
   // Query the database to update an author and return the newly updated author or null
+  /* UPDATE SQL TEMPLATE:
+  UPDATE table_name
+  SET column1 = value1, column2 = value2, ...
+  WHERE condition; */
+  const queryText = "UPDATE authors SET first_name = $1, last_name = $2 WHERE id = $3 RETURNING id, first_name, last_name;";
+  const result = await pool.query(queryText, [updates.first_name, updates.last_name, id]);
+  return result.rows[0] || null;
 }
 
 export async function deleteAuthorById(id) {
