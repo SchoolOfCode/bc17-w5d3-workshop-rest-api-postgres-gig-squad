@@ -42,6 +42,9 @@ export async function createBook(book) {
 
 export async function updateBookById(id, updates) {
   // Query the database to update a book and return the newly updated book or null
+  const queryText = "UPDATE books SET title = $1, published_date = $2, author_id = $3 WHERE id = $4 RETURNING id, title, published_date, author_id;"
+  const result = await pool.query(queryText, [updates.title, updates.published_date, updates.author, id]);
+  return result.rows[0] || null;
 }
 
 export async function deleteBookById(id) {
