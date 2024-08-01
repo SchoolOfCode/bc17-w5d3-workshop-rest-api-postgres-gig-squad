@@ -32,7 +32,7 @@ export async function getAuthorById(id) {
 
 export async function createAuthor(author) {
   // Query the database to create an author and return the newly created author
-  /* INSERT INTO SQL TEMPLATE:
+  /* INSERT INTO SQL template:
   INSERT INTO table_name (column1, column2, column3, ...)
   VALUES (value1, value2, value3, ...); */
   const queryText = "INSERT INTO authors (first_name, last_name) VALUES ($1, $2) RETURNING id, first_name, last_name;";
@@ -42,7 +42,7 @@ export async function createAuthor(author) {
 
 export async function updateAuthorById(id, updates) {
   // Query the database to update an author and return the newly updated author or null
-  /* UPDATE SQL TEMPLATE:
+  /* UPDATE SQL template:
   UPDATE table_name
   SET column1 = value1, column2 = value2, ...
   WHERE condition; */
@@ -53,6 +53,8 @@ export async function updateAuthorById(id, updates) {
 
 export async function deleteAuthorById(id) {
   // Query the database to delete an author and return the deleted author or null
+  /* DELETE SQL template:
+  DELETE FROM table_name WHERE condition; */
   const queryText = "DELETE FROM authors WHERE id = $1 RETURNING *;";
   const result = await pool.query(queryText, [id]);
   return result.rows[0] || null;
